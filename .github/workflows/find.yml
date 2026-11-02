@@ -1,0 +1,55 @@
+name: tiktok-find
+
+on:
+  schedule:
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tiktok-find
+  cancel-in-progress: false
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check session seeded
+        run: |
+          if [ ! -s state.json ]; then
+            echo "::error::state.json is missing. Run login.py locally and commit it."
+            exit 1
+          fi
+
+      - name: Install
+        run: |
+          sudo apt-get update && sudo apt-get install -y xvfb
+          pip install -r requirements.txt
+          playwright install --with-deps chromium
+
+      - name: Find
+        env:
+          HEADLESS: "1"
+          MAX_FOLLOWERS: "100"
+          MIN_FOLLOWERS: "10"
+          MAX_ADD: "25"
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+        run: xvfb-run -a python find.py
+
+      - name: Commit targets and session
+        if: always()
+        run: |
+          git config user.name  "dm-bot"
+          git config user.email "dm-bot@users.noreply.github.com"
+          git add -A targets.csv state.json
+          git diff --cached --quiet || git commit -m "chore: discovered targets [skip ci]"
+          git push
