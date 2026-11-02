@@ -3,3 +3,7 @@ tt_profile/
 .env
 __pycache__/
 run.log
+.env
+state.json
+tt_profile/
+sent.json
