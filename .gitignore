@@ -1,0 +1,5 @@
+.venv/
+tt_profile/
+.env
+__pycache__/
+run.log
