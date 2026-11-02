@@ -7,3 +7,17 @@ run.log
 state.json
 tt_profile/
 sent.json
+
+# Private credentials
+.env
+.env.local
+.env.*.local
+
+# TikTok login sessions and browser profiles
+state.json
+auth.json
+tt_profile/
+playwright/.auth/
+
+# Logs
+*.log
