@@ -9,7 +9,7 @@ KEYWORDS = Path("keywords.txt")
 TEMPLATES = Path("templates.txt")
 
 MAX_FOLLOWERS = int(os.getenv("MAX_FOLLOWERS", "100"))
-MIN_FOLLOWERS = int(os.getenv("MIN_FOLLOWERS", "10"))
+MIN_FOLLOWERS = int(os.getenv("MIN_FOLLOWERS", "0"))
 MAX_ADD = int(os.getenv("MAX_ADD", "25"))
 MAX_CANDIDATES = int(os.getenv("MAX_CANDIDATES", "150"))
 HEADLESS = os.getenv("HEADLESS") == "1"
